@@ -1,7 +1,7 @@
 'use client'
 import { cn } from "@/lib/utils";
-import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { ChevronLeft, MenuIcon, Plus, PlusCircle, Search, Trash } from "lucide-react";
+import { useParams, usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts'
 import { UserItem } from './user-item'
@@ -10,8 +10,17 @@ import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { toast } from 'sonner'
 import { DocumentList } from "./document-list";
-const Navigation = () => {
+import Navbar from './navbar'
 
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from "@/components/ui/popover";
+import TrashBox from "./trash-box";
+import { useSearch } from "@/hooks/use-search";
+const Navigation = () => {
+    const search = useSearch()
     //check page size
     const isMoblie = useMediaQuery('(max-width:768px)')
     const isResizingRef = useRef(false)
@@ -19,7 +28,7 @@ const Navigation = () => {
     const navRef = useRef<ElementRef<'div'>>(null)
     const [isResetting, setIsResetting] = useState(false)
     const [isCollapsed, setIsCollapsed] = useState(true)
-
+    const params = useParams()
 
 
     const create = useMutation(api.documents.create)
@@ -96,7 +105,7 @@ const Navigation = () => {
 
     //toast notification
     const handeCreate = () => {
-        const createNote = create({ title: 'Untitled' })
+        const createNote = create({ title: 'UnTitled' })
         toast.promise(createNote, {
             loading: 'Creating a new note...',
             success: 'New note created',
@@ -124,26 +133,41 @@ const Navigation = () => {
                 <div>
                     <UserItem />
                     <Item
-                        onClick={() => { }}
+                        onClick={search.onOpen}
                         label='Search'
                         icon={Search}
                         isSearch
                     />
-                    <Item
+                    {/* <Item
                         onClick={() => { }}
                         label='Setting'
                         icon={Settings}
 
-                    />
+                    /> */}
                     <Item
                         onClick={handeCreate}
                         label='New Page'
                         icon={PlusCircle}
                     />
                 </div>
-                <div><p className=" mt-4">
-                    <DocumentList />
-                </p> </div>
+                <div>
+                    <p className=" mt-4">
+                        <DocumentList />
+                        <Item
+                            onClick={handeCreate}
+                            label='Add New Page'
+                            icon={Plus}
+                        />
+                        <Popover>
+                            <PopoverTrigger className="w-full mt-3" >
+                                <Item label="Trash" icon={Trash} />
+                            </PopoverTrigger >
+                            <PopoverContent className='w-72 p-2' side={isMoblie ? 'bottom' : 'right'}>
+                                <TrashBox />
+                            </PopoverContent>
+                        </Popover>
+                    </p>
+                </div>
                 <div
                     onMouseDown={handleMouseDown}
                     onClick={resetPosition}
@@ -155,14 +179,18 @@ const Navigation = () => {
             <div
                 ref={navRef}
                 className={cn(
-                    "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)] ",
+                    "absolute top-0 z-[100] left-60 w-[calc(100%-240px)] ",
                     isResetting && "transition-all ease-in-out duration-300",
                     isMoblie && "left-0 w-full"
                 )}
             >
-                <nav>
+                {!!params.documentId ? (<Navbar
+                    isCollapsed={isCollapsed}
+                    resetPosition={resetPosition}
+                />) : (<nav>
                     {isCollapsed && <MenuIcon onClick={resetPosition} className="w-6 h-6 text-muted-foreground" />}
-                </nav>
+                </nav>)}
+
 
             </div>
         </>
