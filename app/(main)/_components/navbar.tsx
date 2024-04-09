@@ -6,7 +6,9 @@ import { useQuery } from "convex/react";
 import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import Title from "./title";
-
+import Banner from "./banner";
+import Menu from "./menu";
+import { Publish } from './publish'
 interface NavProps {
     isCollapsed: boolean
     resetPosition: () => void
@@ -33,7 +35,7 @@ const Navbar = ({
     }
     return (
         <>
-            <div className="bg-background dark:bg-[#1f1f1f] px-3 py-2 flex items-center gap-x-4">
+            <nav className="bg-background dark:bg-[#1f1f1f] px-3 py-2 flex items-center gap-x-4">
                 {isCollapsed && (
                     <MenuIcon role="button"
                         onClick={resetPosition}
@@ -42,8 +44,17 @@ const Navbar = ({
                 )}
                 <div className="flex items-center justify-between w-full">
                     <Title initialData={document} />
+                    <div className="flex items-center gap-x-2">
+                        <Publish initialData={document} />
+                        <Menu documenId={document._id} />
+                    </div>
                 </div>
-            </div>
+            </nav>
+
+            {/* if note is deleted show banner component */}
+            {document.isArchived && (
+                <Banner documentId={document._id}></Banner>
+            )}
         </>
     );
 }

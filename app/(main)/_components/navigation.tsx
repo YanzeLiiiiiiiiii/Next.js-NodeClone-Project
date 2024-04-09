@@ -1,6 +1,6 @@
 'use client'
 import { cn } from "@/lib/utils";
-import { ChevronLeft, MenuIcon, Plus, PlusCircle, Search, Trash } from "lucide-react";
+import { ChevronLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts'
@@ -19,7 +19,12 @@ import {
 } from "@/components/ui/popover";
 import TrashBox from "./trash-box";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-setting";
+
+
+
 const Navigation = () => {
+    const settings = useSettings()
     const search = useSearch()
     //check page size
     const isMoblie = useMediaQuery('(max-width:768px)')
@@ -138,12 +143,13 @@ const Navigation = () => {
                         icon={Search}
                         isSearch
                     />
-                    {/* <Item
-                        onClick={() => { }}
+                    <Item
+
                         label='Setting'
                         icon={Settings}
+                        onClick={settings.onOpen}
 
-                    /> */}
+                    />
                     <Item
                         onClick={handeCreate}
                         label='New Page'

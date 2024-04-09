@@ -64,6 +64,7 @@ export const Item = ({
             success: "Note Removed!",
             error: "Failed to delete the note."
         });
+        router.push('/documents')
     }
     const handleExpand = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>
