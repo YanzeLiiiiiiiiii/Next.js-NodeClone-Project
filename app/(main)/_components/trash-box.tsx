@@ -8,6 +8,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { ConfirmModal } from '@/components/modals/confirm-modal'
+import { Id } from '@/convex/_generated/dataModel'
 const TrashBox = () => {
     const router = useRouter()
     const params = useParams()
