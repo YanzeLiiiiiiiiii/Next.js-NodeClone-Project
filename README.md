@@ -26,7 +26,7 @@
 ```
 npx convex dev
 ```
-**Project Preview**
+<h3>Project Preview</h3>
 <br>
 ```
 http://note-clone-app.vercel.app
