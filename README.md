@@ -1,5 +1,7 @@
 <h3>Tech stack:</h3>
- Next.js , React, Convex, Tailwind, shadcn-ui, clerk, edgestore
+<p>Front: Next.js , React, Tailwind, shadcn/ui, BlockNote</p>
+<p>Back: Clerk, Convex, Edge Store</p>
+
 
  
 <h3>Key Features:</h3>
